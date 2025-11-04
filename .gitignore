@@ -1,0 +1,26 @@
+# Environment
+.env
+venv/
+env/
+*.pyc
+__pycache__/
+
+# Data
+*.xlsx
+*.xls
+*.csv
+uploaded_files/
+chroma_db/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/
