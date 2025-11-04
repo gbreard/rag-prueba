@@ -57,13 +57,35 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+def get_config(key: str, default: str = None) -> str:
+    """
+    Obtiene configuración de st.secrets (Streamlit Cloud) o .env (local)
+
+    Args:
+        key: Nombre de la variable
+        default: Valor por defecto
+
+    Returns:
+        Valor de la configuración
+    """
+    # Primero intenta obtener de st.secrets (Streamlit Cloud)
+    try:
+        if hasattr(st, 'secrets') and key in st.secrets:
+            return st.secrets[key]
+    except:
+        pass
+
+    # Si no, intenta obtener de .env (local)
+    return os.getenv(key, default)
+
+
 def initialize_session_state():
     """Inicializa el estado de la sesión"""
     if 'rag_engine' not in st.session_state:
         try:
-            api_key = os.getenv("GROQ_API_KEY")
-            model = os.getenv("GROQ_MODEL", "llama-3.1-70b-versatile")
-            embedding_model = os.getenv("EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
+            api_key = get_config("GROQ_API_KEY")
+            model = get_config("GROQ_MODEL", "llama-3.1-70b-versatile")
+            embedding_model = get_config("EMBEDDING_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
 
             st.session_state.rag_engine = RAGEngine(
                 groq_api_key=api_key,
@@ -276,14 +298,19 @@ def main():
     initialize_session_state()
 
     # Verificar API key
-    if not os.getenv("GROQ_API_KEY"):
+    if not get_config("GROQ_API_KEY"):
         st.error("""
         ⚠️ **GROQ_API_KEY no configurada**
 
-        Por favor:
+        **Para uso local:**
         1. Crea un archivo `.env` en la raíz del proyecto
         2. Añade: `GROQ_API_KEY=tu_api_key_aqui`
-        3. Obtén tu API key gratis en: https://console.groq.com/keys
+
+        **Para Streamlit Cloud:**
+        1. Ve a App settings → Secrets
+        2. Añade: `GROQ_API_KEY = "tu_api_key_aqui"`
+
+        **Obtén tu API key gratis en:** https://console.groq.com/keys
         """)
         return
 

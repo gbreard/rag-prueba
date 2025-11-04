@@ -2,6 +2,12 @@
 
 Sistema de Retrieval-Augmented Generation (RAG) para interactuar con bases de conocimiento de empleo utilizando LLM gratuito (Groq).
 
+## 🚀 Deploy Rápido
+
+**¿Quieres deployar en internet?** Sigue la [Guía de Deployment en Streamlit Cloud](DEPLOY.md) - Es **GRATIS** y toma 10 minutos.
+
+**¿Prefieres usarlo local?** Continúa leyendo esta guía.
+
 ## 🌟 Características
 
 - **Interfaz web intuitiva** con Streamlit
